@@ -24,7 +24,6 @@ Desarrollar una API REST con NestJS que permita a las empresas cliente gestionar
 - **Registro de empresas**: Endpoint para que nuevas empresas se registren
 - **Login de empresas**: Autenticación con email y contraseña
 - **Protección de rutas**: Middleware JWT para proteger endpoints privados
-- **Refresh token**: Implementar renovación de tokens
 
 ### 2. Gestión de Departamentos
 
@@ -38,12 +37,6 @@ Desarrollar una API REST con NestJS que permita a las empresas cliente gestionar
 - **Carga masiva**: Endpoint para subir archivo Excel con información de empleados
 - **Filtros y búsqueda**: Por departamento, estado activo/inactivo, rango de fechas de contratación
 - **Validaciones**: Email único por empresa, datos obligatorios
-
-### 4. Reportes y Estadísticas
-
-- **Resumen por empresa**: Total de empleados, empleados por departamento
-- **Empleados por rango de fechas**: Filtrar por fecha de contratación
-- **Exportar datos**: Endpoint para descargar información en formato JSON
 
 ## Modelado de Base de Datos - Consideraciones Importantes
 
@@ -70,16 +63,6 @@ Desarrollar una API REST con NestJS que permita a las empresas cliente gestionar
    - ¿Necesitas timestamps de creación/actualización?
    - ¿Cómo manejarías eliminaciones lógicas vs físicas?
 
-## Estructura de Datos Sugerida para el Excel
-
-El archivo Excel debe contener las siguientes columnas:
-
-```
-| Nombre | Email | Telefono | Departamento | Fecha_Contratacion | Salario | Estado |
-|--------|-------|----------|--------------|-------------------|---------|--------|
-| Juan Pérez | juan@email.com | 555-0123 | Desarrollo | 2024-01-15 | 50000 | Activo |
-```
-
 ## Endpoints Principales a Implementar
 
 ### Autenticación
@@ -87,7 +70,6 @@ El archivo Excel debe contener las siguientes columnas:
 ```
 POST /auth/register     # Registro de empresa
 POST /auth/login        # Login
-POST /auth/refresh      # Renovar token
 ```
 
 ### Departamentos
@@ -95,7 +77,7 @@ POST /auth/refresh      # Renovar token
 ```
 GET    /departments           # Listar departamentos de la empresa
 POST   /departments           # Crear departamento
-PUT    /departments/:id       # Actualizar departamento
+PATCH    /departments/:id     # Actualizar departamento
 DELETE /departments/:id       # Eliminar departamento
 ```
 
@@ -104,17 +86,9 @@ DELETE /departments/:id       # Eliminar departamento
 ```
 GET    /employees             # Listar empleados con filtros
 POST   /employees             # Crear empleado individual
-PUT    /employees/:id         # Actualizar empleado
+PATCH    /employees/:id       # Actualizar empleado
 DELETE /employees/:id         # Eliminar empleado
 POST   /employees/upload      # Carga masiva desde Excel
-```
-
-### Reportes
-
-```
-GET /reports/summary          # Resumen de la empresa
-GET /reports/employees-by-date # Empleados por rango de fechas
-GET /reports/export           # Exportar datos
 ```
 
 ## Criterios de Evaluación
@@ -161,12 +135,43 @@ GET /reports/export           # Exportar datos
 
 ## Instrucciones Adicionales
 
-1. **Tiempo estimado**: 4-6 horas
-2. **Base de datos**: Incluye un docker-compose.yml para PostgreSQL
-3. **Variables de entorno**: Usa un archivo .env.example
-4. **Testing**: Al menos unit tests para servicios principales
-5. **Logging**: Implementa logging apropiado
-6. **Documentación**: Comenta el código donde sea necesario
+1. **Base de datos**: Incluye un docker-compose.yml para PostgreSQL
+2. **Variables de entorno**: Usa un archivo .env.example
+3. **Logging**: Implementa logging apropiado
+4. **Documentación**: Comenta el código únicamente donde sea necesario
+
+## Desafíos Adicionales (Bonus)
+
+Si terminas antes del tiempo estimado o quieres demostrar habilidades avanzadas, considera implementar:
+
+### Autenticación Avanzada
+
+- **Refresh token**: Implementar renovación de tokens JWT
+- **Rate limiting**: Limitar intentos de login fallidos
+
+### Reportes y Estadísticas
+
+- **Resumen por empresa**: Total de empleados, empleados por departamento
+- **Empleados por rango de fechas**: Filtrar por fecha de contratación
+- **Exportar datos**: Endpoint para descargar información en formato JSON
+
+### Endpoints Bonus
+
+```
+POST /auth/refresh              # Renovar token
+GET  /reports/summary           # Resumen de la empresa
+GET  /reports/employees-by-date # Empleados por rango de fechas
+GET  /reports/export            # Exportar datos
+```
+
+### Optimizaciones
+
+- **Paginación** en listados de empleados
+- **Validación avanzada** de archivos Excel
+- **Cache** para consultas frecuentes
+- **Notificaciones** por email al completar carga masiva
+- **Tests de integración** con base de datos en memoria
+- **Despliegue en Railway**: Configurar y desplegar la aplicación en Railway con PostgreSQL
 
 ## Preguntas para Reflexión
 
